@@ -2,11 +2,9 @@
   "name": "@zzzzbov/media",
   "version": "0.0.0",
   "description": "Sass media mixin",
-  "files": [
-    "media.scss"
-  ],
+  "main": "media.scss",
   "scripts": {},
-  "keywords": [],
+  "keywords": ["sass", "scss", "mixin", "css", "media queries", "media-queries"],
   "author": "zzzzBov <zzzzBov@gmail.com> (https://zzzzbov.com/)",
   "license": "MIT"
 }
