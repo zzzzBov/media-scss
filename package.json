@@ -2,9 +2,23 @@
   "name": "@zzzzbov/media",
   "version": "0.0.1",
   "description": "Sass media mixin",
-  "main": "media.scss",
-  "scripts": {},
-  "keywords": ["sass", "scss", "mixin", "css", "media queries", "media-queries"],
+  "keywords": [
+    "sass",
+    "scss",
+    "mixin",
+    "css",
+    "media queries",
+    "media-queries"
+  ],
+  "homepage": "https://github.com/zzzzBov/media-scss/#readme",
+  "bugs": {
+    "url": "https://github.com/zzzzBov/media-scss/issues"
+  },
+  "license": "MIT",
   "author": "zzzzBov <zzzzBov@gmail.com> (https://zzzzbov.com/)",
-  "license": "MIT"
+  "main": "media.scss",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zzzzBov/media-scss.git"
+  }
 }
