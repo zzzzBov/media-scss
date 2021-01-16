@@ -1,0 +1,37 @@
+@use 'sass:map';
+@use '../variables' as *;
+
+// TODO:
+// - update 0.001 to be a configurable $delta value
+// - add configuration to use, ignore, warn, or error when from/to are not found
+//   and their values are not null.
+//     I.E.
+//     with `@include media(100px, md)`
+//     `use` would result in `@media (min-width: 100px) and (max-width: 48em)`
+//     `ignore` would result in `@media (max-width: 48em)`
+//     `warn` would add a warning to the build output and result in
+//     `@media (max-width: 48em)`
+//     `error` would result in a build error
+// - add configuration to ignore, warn, or error when both `$min` and `$max` are
+//   missing
+
+@mixin media($from: null, $to: null, $map: $breakpoints) {
+  $min: if(map.has-key($map, $from), map.get($map, $from), $from);
+  $max: if(map.has-key($map, $to), map.get($map, $to) - 0.001, $to);
+
+  @if $min and $max {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @warn "Unused media mixin from '#{$from}' to '#{$to}'.";
+  }
+}
