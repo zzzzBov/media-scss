@@ -11,8 +11,6 @@
 //     `warn` would add a warning to the build output and result in
 //     `@media (max-width: 48em)`
 //     `error` would result in a build error
-// - add configuration to ignore, warn, or error when both `$min` and `$max` are
-//   missing
 
 @mixin media($from: null, $to: null, $map: $breakpoints) {
   $min: if(map.has-key($map, $from), map.get($map, $from), $from);
@@ -34,6 +32,6 @@
       @content;
     }
   } @else {
-    @warn "Unused media mixin from '#{$from}' to '#{$to}'.";
+    @error "Unused media mixin from '#{$from}' to '#{$to}'.";
   }
 }

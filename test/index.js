@@ -24,13 +24,21 @@ fs.readdirSync(__dirname, readdirOpts)
           "utf8"
         );
 
-        const expected = normalize(
-          fs.readFileSync(path.join(modulePath, test, "expected.css"), "utf8")
-        );
+        const error = fs.existsSync(path.join(modulePath, test, "error.txt"));
+
+        const expected = error
+          ? fs.readFileSync(path.join(modulePath, test, "error.txt"), "utf8")
+          : normalize(
+              fs.readFileSync(
+                path.join(modulePath, test, "expected.css"),
+                "utf8"
+              )
+            );
 
         const testPath = path.join(modulePath, test, "test.scss");
 
         return {
+          error,
           expected,
           testPath,
           title: `[${test}] ${title}`,
@@ -38,16 +46,25 @@ fs.readdirSync(__dirname, readdirOpts)
       });
 
     describe(module, () => {
-      tests.forEach(({ expected, testPath, title }) => {
+      tests.forEach(({ error, expected, testPath, title }) => {
         it(title, () => {
-          const resultData = sass.renderSync({
-            file: testPath,
-            includePaths: [path.resolve(__dirname, "..")],
-          });
+          if (error) {
+            expect(() => {
+              sass.renderSync({
+                file: testPath,
+                includePath: [path.resolve(__dirname, "..")],
+              });
+            }).to.throw(expected);
+          } else {
+            const resultData = sass.renderSync({
+              file: testPath,
+              includePaths: [path.resolve(__dirname, "..")],
+            });
 
-          const result = normalize(resultData.css.toString());
+            const result = normalize(resultData.css.toString());
 
-          expect(result).to.equal(expected);
+            expect(result).to.equal(expected);
+          }
         });
       });
     });
