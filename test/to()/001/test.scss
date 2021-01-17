@@ -1,0 +1,19 @@
+@use 'index' as m;
+
+.test {
+  @media #{m.to(xs)} {
+    color: #001001;
+  }
+  @media #{m.to(sm)} {
+    color: #001002;
+  }
+  @media #{m.to(md)} {
+    color: #001003;
+  }
+  @media #{m.to(lg)} {
+    color: #001004;
+  }
+  @media #{m.to(xl)} {
+    color: #001005;
+  }
+}

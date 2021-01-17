@@ -1,0 +1,23 @@
+@use 'sass:map';
+@use '../variables' as *;
+
+@function to($to, $map: $breakpoints) {
+  $hasMax: map.has-key($map, $to);
+  $rawMax: map.get($map, $to);
+  @if ($to != null and not $hasMax) {
+    $msg: "$to value of '#{$to}' could not be found in $breakpoints";
+    @if ($missing == warn) {
+      @warn $msg;
+    } @else if ($missing == error) {
+      @error $msg;
+    }
+  }
+  $delta: if($hasMax and $rawMax and unit($rawMax) == px, 1, 0.001);
+  $max: if($hasMax, $rawMax - $delta, if($missing == use, $to, null));
+
+  @if (not $max) {
+    @error "Unused to function #{$to}";
+  }
+
+  @return "(max-width: #{$max})";
+}
