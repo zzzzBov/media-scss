@@ -1,0 +1,39 @@
+@use 'sass:map';
+@use '../variables' as *;
+
+@function between($from: null, $to: null, $map: $breakpoints) {
+  $hasMin: map.has-key($map, $from);
+  $rawMin: map.get($map, $from);
+  @if ($from != null and not $hasMin) {
+    $msg: "$from value of '#{$from}' could not be found in $breakpoints";
+    @if ($missing == warn) {
+      @warn $msg;
+    } @else if ($missing == error) {
+      @error $msg;
+    }
+  }
+  $min: if($hasMin, $rawMin, if($missing == use, $from, null));
+
+  $hasMax: map.has-key($map, $to);
+  $rawMax: map.get($map, $to);
+  @if ($to != null and not $hasMax) {
+    $msg: "$to value of '#{$to}' could not be found in $breakpoints";
+    @if ($missing == warn) {
+      @warn $msg;
+    } @else if ($missing == error) {
+      @error $msg;
+    }
+  }
+  $delta: if($hasMax and $rawMax and unit($rawMax) == px, 1, 0.001);
+  $max: if($hasMax, $rawMax - $delta, if($missing == use, $to, null));
+
+  @if $min and $max {
+    @return "(min-width: #{$min}) and (max-width: #{$max})";
+  } @else if $min {
+    @return "(min-width: #{$min})";
+  } @else if $max {
+    @return "(max-width: #{$max})";
+  } @else {
+    @error "Unused media mixin from '#{$from}' to '#{$to}'.";
+  }
+}
