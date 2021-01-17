@@ -1,0 +1,9 @@
+@use 'index' as m with (
+  $missing: error
+);
+
+.test {
+  @include m.media(md, 1000px) {
+    color: #014001;
+  }
+}

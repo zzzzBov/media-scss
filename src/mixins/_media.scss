@@ -1,23 +1,15 @@
 @use 'sass:map';
 @use '../variables' as *;
 
-// TODO:
-// - add configuration to use, ignore, warn, or error when from/to are not found
-//   and their values are not null.
-//     I.E.
-//     with `@include media(100px, md)`
-//     `use` would result in `@media (min-width: 100px) and (max-width: 48em)`
-//     `ignore` would result in `@media (max-width: 48em)`
-//     `warn` would add a warning to the build output and result in
-//     `@media (max-width: 48em)`
-//     `error` would result in a build error
-
 @mixin media($from: null, $to: null, $map: $breakpoints) {
   $hasMin: map.has-key($map, $from);
   $rawMin: map.get($map, $from);
   @if ($from != null and not $hasMin) {
+    $msg: "$from value of '#{$from}' could not be found in $breakpoints";
     @if ($missing == warn) {
-      @warn "$from value of '#{$from}' could not be found in $breakpoints";
+      @warn $msg;
+    } @else if ($missing == error) {
+      @error $msg;
     }
   }
   $min: if($hasMin, $rawMin, if($missing == use, $from, null));
@@ -25,8 +17,11 @@
   $hasMax: map.has-key($map, $to);
   $rawMax: map.get($map, $to);
   @if ($to != null and not $hasMax) {
+    $msg: "$to value of '#{$to}' could not be found in $breakpoints";
     @if ($missing == warn) {
-      @warn "$to value of '#{$to}' could not be found in $breakpoints";
+      @warn $msg;
+    } @else if ($missing == error) {
+      @error $msg;
     }
   }
   $delta: if($hasMax and $rawMax and unit($rawMax) == px, 1, 0.001);
