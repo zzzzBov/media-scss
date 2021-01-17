@@ -3,7 +3,7 @@
     color: #004001;
   }
 }
-@media (max-width: 199.999px) {
+@media (max-width: 199px) {
   .test {
     color: #004002;
   }

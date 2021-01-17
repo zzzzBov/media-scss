@@ -2,7 +2,6 @@
 @use '../variables' as *;
 
 // TODO:
-// - update 0.001 to be a configurable $delta value
 // - add configuration to use, ignore, warn, or error when from/to are not found
 //   and their values are not null.
 //     I.E.
@@ -17,7 +16,10 @@
 
 @mixin media($from: null, $to: null, $map: $breakpoints) {
   $min: if(map.has-key($map, $from), map.get($map, $from), $from);
-  $max: if(map.has-key($map, $to), map.get($map, $to) - 0.001, $to);
+  $hasMax: map.has-key($map, $to);
+  $rawMax: map.get($map, $to);
+  $delta: if($hasMax and $rawMax and unit($rawMax) == px, 1, 0.001);
+  $max: if($hasMax, $rawMax - $delta, $to);
 
   @if $min and $max {
     @media (min-width: $min) and (max-width: $max) {
