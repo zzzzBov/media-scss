@@ -1,6 +1,18 @@
 @use 'sass:map';
 @use '../variables' as *;
 
+/// # Media Mixin
+///
+/// The `media()` mixin is used to create media queries in configurable ranges.
+///
+/// @param $from [null] - The lower bound of the media query range. If `null`
+/// is specified the lower range will be skipped.
+/// @param $to [null] - The upper bound of the media query range. If `null` is
+/// specified the upper range will be skipped.
+/// @param $map [$breakpoints] - The map to use for breakpoint ranges.
+///
+/// @see $breakpoints
+/// @see $missing
 @mixin media($from: null, $to: null, $map: $breakpoints) {
   $hasMin: map.has-key($map, $from);
   $rawMin: map.get($map, $from);
