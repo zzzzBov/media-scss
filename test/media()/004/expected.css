@@ -1,0 +1,15 @@
+@media (min-width: 100px) {
+  .test {
+    color: #004001;
+  }
+}
+@media (max-width: 199.999px) {
+  .test {
+    color: #004002;
+  }
+}
+@media (min-width: 300px) {
+  .test {
+    color: #004003;
+  }
+}

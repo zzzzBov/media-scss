@@ -1,0 +1,21 @@
+@use 'index' as m;
+
+$custom: (
+  one: 100px,
+  two: 200px,
+  three: 300px,
+);
+
+.test {
+  @include m.media(one, $map: $custom) {
+    color: #004001;
+  }
+
+  @include m.media(null, two, $custom) {
+    color: #004002;
+  }
+
+  @include m.media($map: $custom, $from: three) {
+    color: #004003;
+  }
+}

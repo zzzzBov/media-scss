@@ -1,0 +1,11 @@
+@use 'index' as *;
+
+$breakpoints: (
+  example: 100px,
+);
+
+.test {
+  @include media(example) {
+    color: #005001;
+  }
+}

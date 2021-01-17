@@ -1,0 +1,25 @@
+@media (min-width: 20em) {
+  .test {
+    color: #002001;
+  }
+}
+@media (min-width: 30em) {
+  .test {
+    color: #002002;
+  }
+}
+@media (min-width: 48em) {
+  .test {
+    color: #002003;
+  }
+}
+@media (min-width: 64em) {
+  .test {
+    color: #002004;
+  }
+}
+@media (min-width: 75em) {
+  .test {
+    color: #002005;
+  }
+}

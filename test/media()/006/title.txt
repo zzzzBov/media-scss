@@ -1,0 +1,1 @@
+should use the overridden breakpoints when imported in a namespace
