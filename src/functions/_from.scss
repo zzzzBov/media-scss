@@ -1,0 +1,25 @@
+@use 'sass:map';
+@use '../variables' as *;
+
+// TODO
+// Determine behavior of `from` function with various values of $missing as
+// `ignore`, `warn`, and `error` will all produce errors.
+
+@function from($from, $map: $breakpoints) {
+  $hasMin: map.has-key($map, $from);
+  $rawMin: map.get($map, $from);
+  @if ($from != null and not $hasMin) {
+    $msg: "$from value of '#{$from}' could not be found in $breakpoints";
+    @if ($missing == warn) {
+      @warn $msg;
+    } @else if ($missing == error) {
+      @error $msg;
+    }
+  }
+  $min: if($hasMin, $rawMin, if($missing == use, $from, null));
+
+  @if (not $min) {
+    @error "Unused from function #{$from}";
+  }
+  @return "(min-width: #{$min})";
+}
