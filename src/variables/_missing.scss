@@ -1,0 +1,30 @@
+/// # Missing Boundary
+///
+/// The `$missing` configuration setting is used to specify the behavior when a
+/// range boundary is missing from the `$breakpoints` map and is not `null`.
+///
+/// ## Use (default)
+///
+/// `use` indicates that the range boundary should be used:
+///
+/// I.E. `media(100px, lg)` produces
+/// `@media (min-width: 100px) and (max-width: 63.999em)`
+///
+/// ## Ignore
+///
+/// `ignore` indicates that the range boundary should be ignored.
+///
+/// I.E. `media(0, lg)` produces `@media (max-width: 63.999em)`
+///
+/// ## Warn
+///
+/// `warn` indicates that the range boundary should be ignored and a warning
+/// message should be included in the build output. This mode may be useful for
+/// catching spelling mistakes.
+///
+/// ## Error
+///
+/// `error` indicates that the range boundary should produce a build error.
+///
+/// @type use | ignore | warn | error
+$missing: use !default;

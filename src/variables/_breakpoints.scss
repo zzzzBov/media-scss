@@ -1,3 +1,8 @@
+/// # Breakpoints Map
+///
+/// The `$breakpoints` configuration setting is used to specify the names and
+/// values to use for each media query breakpoint.
+///
 // prettier-ignore
 $breakpoints: (
   xs: 20em, //  320px
