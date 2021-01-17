@@ -1,0 +1,7 @@
+@use 'index' as *;
+
+.test {
+  @include media(example) {
+    color: #007002;
+  }
+}

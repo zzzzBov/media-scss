@@ -1,0 +1,11 @@
+@media (min-width: 100px) {
+  .test {
+    color: #007001;
+  }
+}
+
+@media (min-width: 100px) {
+  .test {
+    color: #007002;
+  }
+}
