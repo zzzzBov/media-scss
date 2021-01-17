@@ -13,11 +13,15 @@
 //     `error` would result in a build error
 
 @mixin media($from: null, $to: null, $map: $breakpoints) {
-  $min: if(map.has-key($map, $from), map.get($map, $from), $from);
+  $min: if(
+    map.has-key($map, $from),
+    map.get($map, $from),
+    if($missing == use, $from, null)
+  );
   $hasMax: map.has-key($map, $to);
   $rawMax: map.get($map, $to);
   $delta: if($hasMax and $rawMax and unit($rawMax) == px, 1, 0.001);
-  $max: if($hasMax, $rawMax - $delta, $to);
+  $max: if($hasMax, $rawMax - $delta, if($missing == use, $to, null));
 
   @if $min and $max {
     @media (min-width: $min) and (max-width: $max) {
