@@ -144,7 +144,7 @@ Upper bounds are reduced by `1` if they use `px` units. Otherwise they are reduc
 
 ### Functions
 
-#### `between($from: null, $to: null, $breakpoitns)`
+#### `between($from: null, $to: null, $breakpoints)`
 
 #### `from($from, $map: $breakpoints)`
 
