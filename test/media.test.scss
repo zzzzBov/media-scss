@@ -1,0 +1,317 @@
+@use '../index' as m with (
+  $breakpoints: (
+    xs: 20em, 
+    sm: 30em,
+    md: 48em,
+    lg: 64em,
+    xl: 75em,
+    px-example: 100px,
+  ),
+  $-test: true
+);
+@use 'true' as *;
+
+@include describe("media($from, $to, $map)") {
+  @include it("should add a media query using values from the default map") {
+    @include assert {
+      @include output {
+        @include m.media(sm, lg) {
+          color: #001001;
+        }
+      }
+
+      @include expect {
+        @media (min-width: 30em) and (max-width: 63.999em) {
+          color: #001001;
+        }
+      }
+    }
+  }
+
+  @include it(
+    "should add min-width media queries when only '$from' is specified"
+  ) {
+    @include assert {
+      @include output {
+        @include m.media(xs) {
+          color: #002001;
+        }
+
+        @include m.media(sm) {
+          color: #002002;
+        }
+
+        @include m.media(md) {
+          color: #002003;
+        }
+
+        @include m.media(lg) {
+          color: #002004;
+        }
+
+        @include m.media(xl) {
+          color: #002005;
+        }
+      }
+
+      @include expect {
+        @media (min-width: 20em) {
+          color: #002001;
+        }
+
+        @media (min-width: 30em) {
+          color: #002002;
+        }
+
+        @media (min-width: 48em) {
+          color: #002003;
+        }
+
+        @media (min-width: 64em) {
+          color: #002004;
+        }
+
+        @media (min-width: 75em) {
+          color: #002005;
+        }
+      }
+    }
+  }
+
+  @include it(
+    "should add max-width media queries when only '$to' is specified"
+  ) {
+    @include assert {
+      @include output {
+        @include m.media(null, xs) {
+          color: #003001;
+        }
+
+        @include m.media($to: sm) {
+          color: #003002;
+        }
+
+        @include m.media(false, md) {
+          color: #003003;
+        }
+
+        @include m.media($to: lg) {
+          color: #003004;
+        }
+
+        @include m.media($to: xl) {
+          color: #003005;
+        }
+      }
+
+      @include expect {
+        @media (max-width: 19.999em) {
+          color: #003001;
+        }
+
+        @media (max-width: 29.999em) {
+          color: #003002;
+        }
+
+        @media (max-width: 47.999em) {
+          color: #003003;
+        }
+
+        @media (max-width: 63.999em) {
+          color: #003004;
+        }
+
+        @media (max-width: 74.999em) {
+          color: #003005;
+        }
+      }
+    }
+  }
+
+  @include it("should use the specified '$map' for looking up values") {
+    @include assert {
+      @include output {
+        $custom: (
+          one: 100px,
+          two: 200px,
+          three: 300px,
+        );
+
+        @include m.media(one, $map: $custom) {
+          color: #004001;
+        }
+
+        @include m.media(null, two, $custom) {
+          color: #004002;
+        }
+
+        @include m.media($map: $custom, $from: three) {
+          color: #004003;
+        }
+      }
+
+      @include expect {
+        @media (min-width: 100px) {
+          color: #004001;
+        }
+
+        @media (max-width: 199px) {
+          color: #004002;
+        }
+
+        @media (min-width: 300px) {
+          color: #004003;
+        }
+      }
+    }
+  }
+
+  @include it("should subtract 1px when '$to' resolves to a pixel value") {
+    @include assert {
+      @include output {
+        @include m.media($to: px-example) {
+          color: #008001;
+        }
+      }
+
+      @include expect {
+        @media (max-width: 99px) {
+          color: #008001;
+        }
+      }
+    }
+  }
+
+  @include it("should throw when both boundaries are null") {
+    @include assert {
+      @include output {
+        @include m.media(null, null) {
+          color: #009001;
+        }
+      }
+
+      @include expect {
+        error: "Unused media mixin from 'null' to 'null'.";
+      }
+    }
+  }
+
+  @include it(
+    "should use boundaries as-is if they don't exist in `$breakpoints` and `$missing` is set to `use`"
+  ) {
+    @include assert {
+      m.$missing: use;
+
+      @include output {
+        @include m.media(100px, md) {
+          color: #010001;
+        }
+
+        @include m.media(md, 1000px) {
+          color: #010002;
+        }
+      }
+
+      @include expect {
+        @media (min-width: 100px) and (max-width: 47.999em) {
+          color: #010001;
+        }
+        @media (min-width: 48em) and (max-width: 1000px) {
+          color: #010002;
+        }
+      }
+    }
+  }
+
+  @include it(
+    "should ignore boundaries if they don't exist in `$breakpoints` and `$missing` is set to `ignore`"
+  ) {
+    @include assert {
+      m.$missing: ignore;
+
+      @include output {
+        @include m.media(100px, md) {
+          color: #012001;
+        }
+
+        @include m.media(md, 1000px) {
+          color: #012002;
+        }
+      }
+
+      @include expect {
+        @media (max-width: 47.999em) {
+          color: #012001;
+        }
+        @media (min-width: 48em) {
+          color: #012002;
+        }
+      }
+    }
+  }
+
+  @include it(
+    "should iginore boundaries and log a warning if they don't exist in `$breakpoints` and `$missing` is set to `warn`"
+  ) {
+    @include assert {
+      m.$missing: warn;
+
+      @include output {
+        @include m.media(100px, md) {
+          color: #012001;
+        }
+
+        @include m.media(md, 1000px) {
+          color: #012002;
+        }
+      }
+
+      @include expect {
+        warning: "$from value of '100px' could not be found in $breakpoints";
+        @media (max-width: 47.999em) {
+          color: #012001;
+        }
+        warning: "$to value of '1000px' could not be found in $breakpoints";
+        @media (min-width: 48em) {
+          color: #012002;
+        }
+      }
+    }
+  }
+
+  @include it(
+    "should throw an error if `$from` doesn't exist in `$breakpoints` and `$missing` is set to `error`"
+  ) {
+    @include assert {
+      m.$missing: error;
+
+      @include output {
+        @include m.media(100px, md) {
+          color: #013001;
+        }
+      }
+
+      @include expect {
+        error: "$from value of '100px' could not be found in $breakpoints";
+      }
+    }
+  }
+
+  @include it(
+    "should throw an error if `$to` doesn't exist in `$breakpoints` and `$missing` is set to `error`"
+  ) {
+    @include assert {
+      m.$missing: error;
+
+      @include output {
+        @include m.media(md, 1000px) {
+          color: #014001;
+        }
+      }
+
+      @include expect {
+        error: "$to value of '1000px' could not be found in $breakpoints";
+      }
+    }
+  }
+}
