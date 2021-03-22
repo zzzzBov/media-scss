@@ -1,9 +1,0 @@
-@use 'index' as m;
-
-m.$breakpoints: (example: 100px);
-
-.test {
-  @include m.media(example) {
-    color: #006001;
-  }
-}
