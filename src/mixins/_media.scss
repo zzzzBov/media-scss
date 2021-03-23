@@ -1,6 +1,24 @@
 @use 'sass:map';
 @use '../variables' as *;
 
+$-test: false !default;
+
+@mixin _warn($message) {
+  @if ($-test) {
+    warning: $message;
+  } @else {
+    @warn $message;
+  }
+}
+
+@mixin _error($message) {
+  @if ($-test) {
+    error: $message;
+  } @else {
+    @error $message;
+  }
+}
+
 /// # Media Mixin
 ///
 /// The `media()` mixin is used to create media queries in configurable ranges.
@@ -14,14 +32,16 @@
 /// @see $breakpoints
 /// @see $missing
 @mixin media($from: null, $to: null, $map: $breakpoints) {
+  $error: false;
   $hasMin: map.has-key($map, $from);
   $rawMin: map.get($map, $from);
   @if ($from != null and not $hasMin) {
     $msg: "$from value of '#{$from}' could not be found in $breakpoints";
     @if ($missing == warn) {
-      @warn $msg;
+      @include _warn($msg);
     } @else if ($missing == error) {
-      @error $msg;
+      @include _error($msg);
+      $error: true;
     }
   }
   $min: if($hasMin, $rawMin, if($missing == use, $from, null));
@@ -31,15 +51,18 @@
   @if ($to != null and not $hasMax) {
     $msg: "$to value of '#{$to}' could not be found in $breakpoints";
     @if ($missing == warn) {
-      @warn $msg;
+      @include _warn($msg);
     } @else if ($missing == error) {
-      @error $msg;
+      @include _error($msg);
+      $error: true;
     }
   }
   $delta: if($hasMax and $rawMax and unit($rawMax) == px, 1, 0.001);
   $max: if($hasMax, $rawMax - $delta, if($missing == use, $to, null));
 
-  @if $min and $max {
+  @if ($error) {
+    // disable output during tests
+  } @else if $min and $max {
     @media (min-width: $min) and (max-width: $max) {
       @content;
     }
@@ -52,6 +75,8 @@
       @content;
     }
   } @else {
-    @error "Unused media mixin from '#{$from}' to '#{$to}'.";
+    $from: if($from == null, "null", $from);
+    $to: if($to == null, "null", $to);
+    @include _error("Unused media mixin from '#{$from}' to '#{$to}'.");
   }
 }

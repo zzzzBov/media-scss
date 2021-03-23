@@ -1,1 +1,0 @@
-should use the configuration from the first time the module is used

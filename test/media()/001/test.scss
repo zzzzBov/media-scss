@@ -1,7 +1,0 @@
-@use 'index' as m;
-
-.test {
-  @include m.media(sm, lg) {
-    color: #001001;
-  }
-}

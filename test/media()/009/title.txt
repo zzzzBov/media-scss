@@ -1,1 +1,0 @@
-should throw when both boundaries are null
