@@ -1,0 +1,25 @@
+/// # Include Boundary
+///
+/// The `$include` configuration setting is used to specify which boundary to
+/// include in the media query range.
+///
+/// ## Lower (default)
+///
+/// `lower` indicates that the lower bound of the media query range is included
+///
+/// ```
+/// @media (480px <= width < 768px) {
+///   .example { ... }
+/// }
+/// ```
+///
+/// ## Upper
+///
+/// `upper` indicates that the upper bound of the media query range is included
+///
+/// ```
+/// @media (480px < width <= 768px) {
+///   .example { ... }
+/// }
+/// ```
+$include: lower;

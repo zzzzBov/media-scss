@@ -1,0 +1,43 @@
+/// # Module Level
+///
+/// The `$level` configuration setting is used to specify the media query
+/// module level to use when generating media queries.
+///
+/// ## Level 2
+///
+/// Media queries level 2 will use calculated ranges with a gap of `1px` for
+/// `px` values, and a gap of `0.001` for all other units.
+///
+/// Use level 2 if you need IE11 support.
+///
+/// ```
+/// @media (min-width: 480px) and (max-width: 767px) {
+///   .example { ... }
+/// }
+/// ```
+///
+/// ## Level 3 (default)
+///
+/// Media queries level 3 will use nested negated media queries to create
+/// non-overlapping ranges.
+///
+/// ```
+/// @media (min-width: 480px) {
+///   @media not all and (min-width: 768px) {
+///     .example { ... }
+///   }
+/// }
+/// ```
+///
+/// ## Level 4
+///
+/// Media queries level 4 will use range syntax to create non-overlapping
+/// ranges.
+///
+/// ```
+/// @media (480px <= width < 768px) {
+///   .example { ... }
+/// }
+/// ```
+///
+$level: 3 !default;
